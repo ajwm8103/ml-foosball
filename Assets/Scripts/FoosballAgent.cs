@@ -17,8 +17,22 @@ public class FoosballAgent : Agent
 
     EnvironmentParameters m_ResetParams;
 
-    public struct VisibleState {
+    public struct VisibleState
+    {
+        public float fospos;
+        public VisibleState(float fospos
+        )
+        {
+            this.fospos = fospos;
+        }
 
+        public void AddObservations(VectorSensor sensor)
+        {
+            // 31
+            //Debug.Log(localPosition.x);
+            //Debug.Log(localPosition.y);
+            sensor.AddObservation(fospos);
+        }
     }
 
     public override void Initialize()
@@ -59,6 +73,12 @@ public class FoosballAgent : Agent
 
         // Global state
         sensor.AddObservation(envController.totalSteps / envController.maxSteps);
+    }
+
+    public VisibleState GetVisibleState()
+    {
+        VisibleState vs = new VisibleState();
+        return vs;
     }
 
     // Start is called before the first frame update
