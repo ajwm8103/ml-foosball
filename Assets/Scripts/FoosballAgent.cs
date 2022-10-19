@@ -17,27 +17,33 @@ public class FoosballAgent : Agent
     // Private vars
 
     // References to components
+    FoosballAgent m_opponent;
     FoosballEnvController envController;
     FoosballSettings m_foosballSettings;
     FoosballEnvController.AgentInfo m_agentInfo;
 
     EnvironmentParameters m_ResetParams;
 
-    public struct VisibleState
+    public struct FoosmenState
     {
-        public float fospos;
-        public VisibleState(float fospos
-        )
+        public float position;
+        public float angle;
+        public float velocity;
+        public float angularVelocity;
+        public FoosmenState(float position, float angle, float velocity, float angularVelocity)
         {
-            this.fospos = fospos;
+            this.position = position;
+            this.angle = angle;
+            this.velocity = velocity;
+            this.angularVelocity = angularVelocity;
         }
 
         public void AddObservations(VectorSensor sensor)
         {
-            // 31
-            //Debug.Log(localPosition.x);
-            //Debug.Log(localPosition.y);
-            sensor.AddObservation(fospos);
+            sensor.AddObservation(position);
+            sensor.AddObservation(angle);
+            sensor.AddObservation(velocity);
+            sensor.AddObservation(angularVelocity);
         }
     }
 
@@ -79,7 +85,7 @@ public class FoosballAgent : Agent
         ResetAgent();
     }
 
-    public void SetAgentInfo(BrawlEnvController.AgentInfo x)
+    public void SetAgentInfo(FoosballEnvController.AgentInfo x)
     {
         m_agentInfo = x;
     }
@@ -100,19 +106,31 @@ public class FoosballAgent : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         // My state
-        VisibleState myVisibleState = GetVisibleState();
-        myVisibleState.AddObservations(sensor);
+        FoosmenState[] myStates = GetFoosmenStates();
+        foreach (FoosmenState state in myStates)
+        {
+            state.AddObservations(sensor);
+        }
 
         // Opponent state
+        FoosmenState[] opponentStates = m_opponent.GetFoosmenStates();
+        foreach (FoosmenState state in opponentStates)
+        {
+            state.AddObservations(sensor);
+        }
 
         // Global state
         sensor.AddObservation(envController.totalSteps / envController.maxSteps);
     }
 
-    public VisibleState GetVisibleState()
+    public FoosmenState[] GetFoosmenStates()
     {
-        VisibleState vs = new VisibleState();
-        return vs;
+        FoosmenState[] states = new FoosmenState[4];
+        states[0] = new FoosmenState();
+        states[1] = new FoosmenState();
+        states[2] = new FoosmenState();
+        states[3] = new FoosmenState();
+        return states;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -129,6 +147,7 @@ public class FoosballAgent : Agent
         //MoveAgent(actionBuffers.DiscreteActions, actionBuffers.ContinuousActions);
 
         // Graphics
+        /*
         if (m_foosballSettings.effectsAmount != 0)
         {
             m_damageText.text = damage.ToString();
@@ -152,11 +171,11 @@ public class FoosballAgent : Agent
             m_legendSprite.flipX = facingDirection == -1;
 
             envController.DisplayAction(team, teamPosition, actionBuffers.DiscreteActions);
-        }
+        }*/
 
         // Rewards
 
-        if (isAlive)
+        /*if (isAlive)
         {
             if (bottomKO || leftKO || rightKO)
             {
@@ -167,7 +186,7 @@ public class FoosballAgent : Agent
             {
                 KO();
             }
-        }
+        }*/
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
