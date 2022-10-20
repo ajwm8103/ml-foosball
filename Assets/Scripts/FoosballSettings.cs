@@ -5,7 +5,7 @@ using UnityEngine;
 public class FoosballSettings : MonoBehaviour
 {
     [Header("Game Settings")]
-    public BoardType boardType = BoardType.ENGSCI;
+    public TableType boardType = TableType.ENGSCI;
     public RulesType rulesType = RulesType.ENGSCI;
 
     [Header("Visual Settings")]

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BoardType { ENGSCI };
+public enum TableType { ENGSCI };
 public enum RulesType { ENGSCI, GLOBAL };
 public enum PlayerType { PLAYER1, PLAYER2, STAND, BOT};
 public enum DiscreteActionKey { GOALIE_HOLD, DEFENDERS_HOLD, MIDFIELDERS_HOLD, OFFENSIVE_HOLD };
@@ -23,8 +23,6 @@ public class FoosballEnvController : MonoBehaviour
     {
         public int points = 0; // until ma
         public FoosballAgent agent;
-        [HideInInspector]
-        public Rigidbody2D rigidbody;
         [HideInInspector]
         public float totalReward;
         public int totalWins = 0;
@@ -54,7 +52,7 @@ public class FoosballEnvController : MonoBehaviour
     public void ResetEnv()
     {
         totalSteps = 0;
-        firstTeam = Random.Range(0, 2) == 1 ? Team.RED : Team.BLUE;
+        //firstTeam = Random.Range(0, 2) == 1 ? Team.RED : Team.BLUE;
 
         // Reset Agents
         foreach (AgentInfo agentInfo in agents)
@@ -64,12 +62,8 @@ public class FoosballEnvController : MonoBehaviour
             agentInfo.points = 0;
             agentInfo.totalReward = 0f;
             agentInfo.agent.SetAgentInfo(agentInfo);
-            agentInfo.agent.ResetLegend();
-            agentInfo.agent.isAlive = true;
+            agentInfo.agent.ResetAgent();
             // Do something for respawning, randomize spawn points + instant spawn at start
-
-            agentInfo.rigidbody.velocity = Vector3.zero;
-            agentInfo.rigidbody.angularVelocity = 0f;
         }
     }
 }
