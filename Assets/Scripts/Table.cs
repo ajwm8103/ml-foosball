@@ -18,4 +18,14 @@ public class Table : MonoBehaviour
     {
         
     }
+
+    public void Reset()
+    {
+        
+    }
+
+    private void RegenerateTable()
+    {
+
+    }
 }

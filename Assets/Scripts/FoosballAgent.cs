@@ -73,7 +73,7 @@ public class FoosballAgent : Agent
     public override void Initialize()
     {
         base.Initialize();
-        //m_brawlSettings = FindObjectOfType<BrawlSettings>();
+        m_foosballSettings = FindObjectOfType<FoosballSettings>();
 
         envController = transform.parent.GetComponentInParent<FoosballEnvController>();
         m_Existential = 1f / envController.maxSteps;
