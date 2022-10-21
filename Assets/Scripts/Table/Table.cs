@@ -35,6 +35,8 @@ public class Table : MonoBehaviour
 
         // Create rods
         Rod testRod = Instantiate(rodPrefab, transform.position, Quaternion.identity);
-        
+        testRod.rodType = RodType.MIDFIELDERS;
+        testRod.tso = tso;
+        testRod.GenerateFoosmen();
     }
 }

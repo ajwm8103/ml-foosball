@@ -13,9 +13,19 @@ public struct ErrorFloat
         this.std = std;
     }
 
+    public static float operator *(ErrorFloat left, float right)
+    {
+        return left.GetValue()*right;
+    }
+    public static float operator *(float left, ErrorFloat right)
+    {
+        return right * left;
+    }
+
     public float GetValue(){
         return average + Random.Range(-std, std);
     }
+
 }
 
 [CreateAssetMenu(fileName = "Table Configuration", menuName = "ScriptableObject/Table Configuration", order = 1)]
@@ -37,9 +47,15 @@ public class TableScriptableObject : ScriptableObject
     public ErrorFloat rodDiameter = new ErrorFloat(0.022f, 0.0005f);
     public ErrorFloat rodMass = new ErrorFloat(1.506f, 0.020f);
 
-    public ErrorFloat goalieBumperSpacing = new ErrorFloat(0.207f, 0.007f); // from middle to middle
-    public ErrorFloat midfieldersSpacing = new ErrorFloat(0.115f, 0.007f);
-    public ErrorFloat offensiveSpacing = new ErrorFloat(0.115f, 0.007f);
+    public ErrorFloat goalieBumperSpacing = new ErrorFloat(0.207f, 0.004f); // from middle to middle
+    public ErrorFloat defendersSpacing = new ErrorFloat(0.160f, 0.004f);
+    public ErrorFloat midfieldersSpacing = new ErrorFloat(0.115f, 0.004f);
+    public ErrorFloat offensiveSpacing = new ErrorFloat(0.185f, 0.004f);
+
+    public ErrorFloat goalieLengthPercent = new ErrorFloat(0.069718f, 0.0005f);
+    public ErrorFloat defendersLengthPercent = new ErrorFloat(0.191549f, 0.0005f);
+    public ErrorFloat midfieldersLengthPercent = new ErrorFloat(0.438028f, 0.0005f);
+    public ErrorFloat offensiveLengthPercent = new ErrorFloat(0.685211f, 0.0005f);
 
     [Header("Foosman Properties")]
     public ErrorFloat foosmanMass = new ErrorFloat(0.030f, 0.001f); // kg
