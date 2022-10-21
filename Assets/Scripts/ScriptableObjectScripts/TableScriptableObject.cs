@@ -37,6 +37,10 @@ public class TableScriptableObject : ScriptableObject
     public ErrorFloat rodDiameter = new ErrorFloat(0.022f, 0.0005f);
     public ErrorFloat rodMass = new ErrorFloat(1.506f, 0.020f);
 
+    public ErrorFloat goalieBumperSpacing = new ErrorFloat(0.207f, 0.007f); // from middle to middle
+    public ErrorFloat midfieldersSpacing = new ErrorFloat(0.115f, 0.007f);
+    public ErrorFloat offensiveSpacing = new ErrorFloat(0.115f, 0.007f);
+
     [Header("Foosman Properties")]
     public ErrorFloat foosmanMass = new ErrorFloat(0.030f, 0.001f); // kg
     public ErrorFloat foosmanDepth = new ErrorFloat(0.044f, 0.0002f);

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Table : MonoBehaviour
+/// <summary>
+/// Controls the rod, bumper, and attached foosman
+/// </summary>
+public class Rod : MonoBehaviour
 {
-    [Header("Table Parameters")]
-    public TableScriptableObject tso;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -17,15 +17,5 @@ public class Table : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void Reset()
-    {
-        
-    }
-
-    private void RegenerateTable()
-    {
-
     }
 }
