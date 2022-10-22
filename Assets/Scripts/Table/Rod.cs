@@ -37,6 +37,7 @@ public class Rod : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 Foosman foosman = Instantiate(foosmanPrefab);
+                foosman.Generate(tso);
                 foosmanPos -= spacing;
             }
         }

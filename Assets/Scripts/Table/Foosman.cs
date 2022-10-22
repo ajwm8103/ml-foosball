@@ -36,5 +36,8 @@ public class Foosman : MonoBehaviour
     public void Generate(TableScriptableObject tso){
         GameObject torso = Instantiate(torsoPrefab, transform.position, Quaternion.identity);
         torso.transform.parent = transform;
+
+        GameObject foot = Instantiate(torsoPrefab, transform.position, Quaternion.identity);
+        torso.transform.parent = transform;
     }
 }
