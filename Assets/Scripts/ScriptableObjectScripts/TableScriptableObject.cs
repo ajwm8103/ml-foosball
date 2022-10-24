@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct ErrorFloat
+public class ErrorFloat
 {
     public float average;
     public float std;
+    private float value;
     public ErrorFloat(float average, float std)
     {
         this.average = average;
         this.std = std;
+    }
+
+    public static float operator +(ErrorFloat left, float right)
+    {
+        return left.GetValue() + right;
+    }
+
+    public static float operator +(float left, ErrorFloat right)
+    {
+        return right + left;
     }
 
     public static float operator *(ErrorFloat left, float right)
@@ -22,10 +33,20 @@ public struct ErrorFloat
         return right * left;
     }
 
-    public float GetValue(){
-        return average + Random.Range(-std, std);
+    public static float operator /(ErrorFloat left, float right)
+    {
+        return left.GetValue() / right;
     }
 
+    public float SetValue(){
+        value = average + Random.Range(-std, std);
+        return value;
+    }
+
+    public float GetValue()
+    {
+        return value;
+    }
 }
 
 [CreateAssetMenu(fileName = "Table Configuration", menuName = "ScriptableObject/Table Configuration", order = 1)]
@@ -60,7 +81,7 @@ public class TableScriptableObject : ScriptableObject
     [Header("Foosman Properties")]
     public ErrorFloat foosmanMass = new ErrorFloat(0.030f, 0.001f); // kg
     public ErrorFloat foosmanDepth = new ErrorFloat(0.044f, 0.0002f);
-    public ErrorFloat foosmanWidth = new ErrorFloat(0.038f, 0.0002f);
+    public ErrorFloat foosmanWidth = new ErrorFloat(0.038f, 0.0001f);
     public ErrorFloat foosmanBodyHeight = new ErrorFloat(0.044f, 0.0002f);
     public ErrorFloat foosmanFootHeight = new ErrorFloat(0.01f, 0.0001f);
     public ErrorFloat foosmanFootWidth = new ErrorFloat(0.023f, 0.0001f);

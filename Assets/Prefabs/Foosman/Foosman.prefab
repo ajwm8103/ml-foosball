@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3483236806489938374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3483236806489938424}
+  - component: {fileID: 3483236806489938375}
+  m_Layer: 0
+  m_Name: Foosman
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3483236806489938424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3483236806489938374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3483236806489938375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3483236806489938374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6baafc57a292ef24aa1b1662c840e440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyPrefab: {fileID: 7687145635378592337, guid: 476da5c0db17b8f4ea3b6e1224059798, type: 3}
+  footPrefab: {fileID: 7689963007280224388, guid: 6acd519285da16d4ebd0e82cbd071920, type: 3}
+  headPrefab: {fileID: 2559735683615895434, guid: e55b1454aebe19c4bb9f9c7606a7eb88, type: 3}
+  shouldersPrefab: {fileID: 1513003790978873041, guid: a8e732f936ea82946a6f56d707fed0fd, type: 3}
+  torsoPrefab: {fileID: 6315307086782299289, guid: 89407aa9d33852548bcacea7e83fb7a8, type: 3}

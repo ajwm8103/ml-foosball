@@ -8,9 +8,10 @@ using UnityEngine;
 public class Rod : MonoBehaviour
 {
     [Header("Prefabs")]
-    Foosman foosmanPrefab;
+    public Foosman foosmanPrefab;
 
     public RodType rodType;
+    [HideInInspector]
     public TableScriptableObject tso;
 
     // Start is called before the first frame update
@@ -36,7 +37,7 @@ public class Rod : MonoBehaviour
             float foosmanPos = spacing*2;
             for (int i = 0; i < 5; i++)
             {
-                Foosman foosman = Instantiate(foosmanPrefab);
+                Foosman foosman = Instantiate(foosmanPrefab, transform.position + Vector3.forward*foosmanPos, foosmanPrefab.transform.rotation);
                 foosman.Generate(tso);
                 foosmanPos -= spacing;
             }
