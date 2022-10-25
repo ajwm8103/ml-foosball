@@ -65,6 +65,7 @@ public class Rod : MonoBehaviour
             } else {
                 Foosman foosman = Instantiate(foosmanPrefab, transform.position + Vector3.forward * foosmanPos, foosmanPrefab.transform.rotation);
                 foosman.transform.parent = transform;
+                foosman.team = team;
                 foosman.Generate(tso);
                 foosmanPos -= spacing;
             }

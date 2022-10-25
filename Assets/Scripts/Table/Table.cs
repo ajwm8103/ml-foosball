@@ -7,6 +7,7 @@ public class Table : MonoBehaviour
     [Header("Prefabs")]
     public Rod rodPrefab;
     public GameObject tableFloorPrefab;
+    public GameObject tableWallPrefab;
     public Ball ballPrefab;
 
     [Header("Table Parameters")]
@@ -15,7 +16,7 @@ public class Table : MonoBehaviour
     // Private component references
     Ball myBall;
 
-    List<Rod> rods;
+    Rod[] rods;
 
     // Start is called before the first frame update
     void Start()
@@ -42,9 +43,9 @@ public class Table : MonoBehaviour
         foreach (ErrorFloat ef in errorFloats)
         {
             ef.SetValue();
-            Debug.Log(ef.average);
-            Debug.Log(ef.GetValue());
-            Debug.Log("-");
+            //Debug.Log(ef.average);
+            //Debug.Log(ef.GetValue());
+            //Debug.Log("-");
         }
 
         RegenerateTable();
@@ -54,15 +55,21 @@ public class Table : MonoBehaviour
     {
         // Create walls and floor
         float tableThickness = 0.10f;
+        float floorYPos = tso.rodDiameter / 2f + tso.foosmanBodyHeight + tso.foosmanFootHeight + 0.007f + tableThickness / 2F;
         GameObject floor = Instantiate(tableFloorPrefab, transform.position + 
-        Vector3.down*(tso.rodDiameter/2f + tso.foosmanBodyHeight + 0.007f + tableThickness/2F), Quaternion.identity);
+        Vector3.down*floorYPos, Quaternion.identity);
         floor.transform.parent = transform;
         floor.transform.localScale = new Vector3(tso.tableLength.GetValue(), tableThickness, tso.tableWidth.GetValue());
 
+        float wallYPos = -floorYPos + tso.tableDepth / 2f;
+        GameObject wallOne = Instantiate(tableWallPrefab, transform.position + Vector3.left * (tso.tableWidth + tableThickness / 2f)
+        + Vector3.up*wallYPos, Quaternion.identity);
+        wallOne.transform.parent = transform;
+        wallOne.transform.localScale = new Vector3(tableThickness, tso.tableDepth + tableThickness, tso.tableLength.GetValue());
         // Optionally add ramps
 
         // Create rods
-        rods = new List<Rod>();
+        rods = new Rod[8];
         Dictionary<RodType, ErrorFloat> rodToLengthPercent = new Dictionary<RodType, ErrorFloat>{
             {RodType.GOALIE, tso.goalieLengthPercent },
             {RodType.DEFENDERS, tso.defendersLengthPercent },

@@ -10,4 +10,6 @@ public class FoosballSettings : MonoBehaviour
 
     [Header("Visual Settings")]
     public int effectsAmount = 1; // 0 none, 1 normal, 2 fancy
+    public Color redColor;
+    public Color blueColor;
 }
