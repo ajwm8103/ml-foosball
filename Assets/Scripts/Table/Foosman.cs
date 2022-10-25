@@ -45,7 +45,6 @@ public class Foosman : MonoBehaviour
         GameObject head = Instantiate(headPrefab, transform.position + Vector3.up * (tso.rodDiameter / 2 + tso.foosmanShoulderHeight + tso.foosmanHeadHeight/2), headPrefab.transform.rotation);
         head.transform.parent = transform;
         head.transform.localScale = new Vector3(tso.foosmanHeadDepth.GetValue(), tso.foosmanHeadHeight.GetValue(), tso.foosmanHeadWidth.GetValue());
-        Debug.Log(new Vector3(tso.foosmanHeadDepth.GetValue(), tso.foosmanHeadHeight.GetValue(), tso.foosmanHeadWidth.GetValue()));
 
         GameObject shoulders = Instantiate(shouldersPrefab, transform.position + Vector3.up * (tso.rodDiameter / 2 + tso.foosmanShoulderHeight/2), shouldersPrefab.transform.rotation);
         shoulders.transform.parent = transform;

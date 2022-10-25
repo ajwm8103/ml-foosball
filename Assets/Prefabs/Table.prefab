@@ -43,4 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b6338984b636a4ea26db031624e32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rodPrefab: {fileID: 2434943467293407796, guid: e3921f10a421c2d49a5700737e0c2b22, type: 3}
+  tableFloorPrefab: {fileID: 8260450879924867343, guid: d17087c701cd0d447b09de9af321d4e8, type: 3}
+  ballPrefab: {fileID: -1351514631545189966, guid: cab8e25a9392fd94dafb6c382d248fee, type: 3}
   tso: {fileID: 0}

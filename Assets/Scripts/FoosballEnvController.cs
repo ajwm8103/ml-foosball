@@ -6,6 +6,7 @@ public enum TableType { ENGSCI };
 public enum RulesType { ENGSCI, GLOBAL };
 public enum PlayerType { PLAYER1, PLAYER2, STAND, BOT};
 public enum RodType { GOALIE, DEFENDERS, MIDFIELDERS, OFFENSIVE };
+public enum Team { RED, BLUE };
 public enum DiscreteActionKey { GOALIE_HOLD, DEFENDERS_HOLD, MIDFIELDERS_HOLD, OFFENSIVE_HOLD };
 public enum ContinuousActionKey { GOALIE_TORQUE, GOALIE_FORCE, DEFENDERS_TORQUE, DEFENDERS_FORCE, MIDFIELDERS_TORQUE, MIDFIELDERS_FORCE, OFFENSIVE_TORQUE, OFFENSIVE_FORCE };
 public class FoosballEnvController : MonoBehaviour
