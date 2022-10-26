@@ -24,10 +24,16 @@ public class ErrorFloat
         return right + left;
     }
 
+    public static float operator +(ErrorFloat left, ErrorFloat right)
+    {
+        return left.GetValue() + right;
+    }
+
     public static float operator *(ErrorFloat left, float right)
     {
         return left.GetValue()*right;
     }
+
     public static float operator *(float left, ErrorFloat right)
     {
         return right * left;
@@ -69,7 +75,7 @@ public class TableScriptableObject : ScriptableObject
     public ErrorFloat rodMass = new ErrorFloat(1.506f, 0.020f);
 
     public ErrorFloat goalieBumperSpacing = new ErrorFloat(0.207f, 0.004f); // from middle to middle
-    public ErrorFloat defendersSpacing = new ErrorFloat(0.160f, 0.004f);
+    public ErrorFloat defendersSpacing = new ErrorFloat(0.30f, 0.004f);
     public ErrorFloat midfieldersSpacing = new ErrorFloat(0.115f, 0.004f);
     public ErrorFloat offensiveSpacing = new ErrorFloat(0.185f, 0.004f);
 
@@ -80,7 +86,7 @@ public class TableScriptableObject : ScriptableObject
 
     [Header("Foosman Properties")]
     public ErrorFloat foosmanMass = new ErrorFloat(0.030f, 0.001f); // kg
-    public ErrorFloat foosmanDepth = new ErrorFloat(0.044f, 0.0002f);
+    public ErrorFloat foosmanDepth = new ErrorFloat(0.028f, 0.0002f);
     public ErrorFloat foosmanWidth = new ErrorFloat(0.038f, 0.0001f);
     public ErrorFloat foosmanBodyHeight = new ErrorFloat(0.044f, 0.0002f);
     public ErrorFloat foosmanFootHeight = new ErrorFloat(0.01f, 0.0001f);

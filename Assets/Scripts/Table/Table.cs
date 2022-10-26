@@ -62,10 +62,16 @@ public class Table : MonoBehaviour
         floor.transform.localScale = new Vector3(tso.tableLength.GetValue(), tableThickness, tso.tableWidth.GetValue());
 
         float wallYPos = -floorYPos + tso.tableDepth / 2f;
-        GameObject wallOne = Instantiate(tableWallPrefab, transform.position + Vector3.left * (tso.tableWidth + tableThickness / 2f)
+        GameObject wallOne = Instantiate(tableWallPrefab, transform.position + Vector3.back * ((tso.tableWidth + tableThickness) / 2f)
         + Vector3.up*wallYPos, Quaternion.identity);
         wallOne.transform.parent = transform;
-        wallOne.transform.localScale = new Vector3(tableThickness, tso.tableDepth + tableThickness, tso.tableLength.GetValue());
+        wallOne.transform.localScale = new Vector3(tso.tableLength.GetValue(), tso.tableDepth + tableThickness, tableThickness);
+
+        GameObject wallTwo = Instantiate(tableWallPrefab, transform.position + Vector3.forward * ((tso.tableWidth + tableThickness) / 2f)
+        + Vector3.up * wallYPos, Quaternion.identity);
+        wallTwo.transform.parent = transform;
+        wallTwo.transform.localScale = new Vector3(tso.tableLength.GetValue(), tso.tableDepth + tableThickness, tableThickness);
+
         // Optionally add ramps
 
         // Create rods
@@ -109,6 +115,6 @@ public class Table : MonoBehaviour
         myBall = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         myBall.transform.localScale = Vector3.one * tso.ballDiameter.GetValue();
         myBall.myRigidbody.mass = tso.ballMass.GetValue();
-        myBall.myRigidbody.AddForce(Vector3.right * Random.Range(-1f, 1f), ForceMode.Impulse);
+        myBall.myRigidbody.velocity = Vector3.right * Random.Range(-0.2f, 0.2f);
     }
 }

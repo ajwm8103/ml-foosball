@@ -137,12 +137,7 @@ public class FoosballAgent : Agent
     {
         // Actions, size = 9
 
-        //m_agentInfo.AddReward(-m_Existential);
-        //AddReward(-m_Existential);
-        if (Mathf.Abs(transform.position.x) > 5f)
-        {
-            m_agentInfo.AddReward(-m_Existential);
-        }
+        m_agentInfo.AddReward(-m_Existential);
 
         //MoveAgent(actionBuffers.DiscreteActions, actionBuffers.ContinuousActions);
 
@@ -193,10 +188,11 @@ public class FoosballAgent : Agent
     {
         var discreteActionsOut = actionsOut.DiscreteActions;
         var continuousActionsOut = actionsOut.ContinuousActions;
-        discreteActionsOut[(int)DiscreteActionKey.GOALIE_HOLD] = 1;
+        /*discreteActionsOut[(int)DiscreteActionKey.GOALIE_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.DEFENDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.MIDFIELDERS_HOLD] = 1;
-        discreteActionsOut[(int)DiscreteActionKey.OFFENSIVE_HOLD] = 1;
+        discreteActionsOut[(int)DiscreteActionKey.OFFENSIVE_HOLD] = 1;*/
+
 
         if (playerType == PlayerType.PLAYER1)
         {

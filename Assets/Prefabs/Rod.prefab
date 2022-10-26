@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 8801347336923850803}
   - component: {fileID: 407453287091516918}
   - component: {fileID: 2434943467293407796}
-  m_Layer: 0
+  - component: {fileID: 3558749493004597324}
+  m_Layer: 6
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,4 +113,21 @@ MonoBehaviour:
   foosmanPrefab: {fileID: 3483236806489938375, guid: 81d5206d2b1951d46a7a485b872bdd8c, type: 3}
   bumperPrefab: {fileID: 4433349130595994022, guid: f37d4f5671e408b4fb61b7b5d47ddfad, type: 3}
   rodType: 0
+  team: 0
   tso: {fileID: 0}
+--- !u!54 &3558749493004597324
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5537871926569245180}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 50
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 94
+  m_CollisionDetection: 0

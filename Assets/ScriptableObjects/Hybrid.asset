@@ -12,3 +12,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24c232867c44046976d54919c35363, type: 3}
   m_Name: Hybrid
   m_EditorClassIdentifier: 
+  tableLength:
+    average: 1.42
+    std: 0.01
+  tableWidth:
+    average: 0.77
+    std: 0.005
+  tableDepth:
+    average: 0.1
+    std: 0.005
+  slopes: 0
+  kBumper:
+    average: 0.1
+    std: 0.005
+  ballMass:
+    average: 0.024
+    std: 0.001
+  ballDiameter:
+    average: 0.036
+    std: 0.0005
+  rodDiameter:
+    average: 0.022
+    std: 0.0005
+  rodMass:
+    average: 1.506
+    std: 0.02
+  goalieBumperSpacing:
+    average: 0.207
+    std: 0.004
+  defendersSpacing:
+    average: 0.3
+    std: 0.004
+  midfieldersSpacing:
+    average: 0.115
+    std: 0.004
+  offensiveSpacing:
+    average: 0.185
+    std: 0.004
+  goalieLengthPercent:
+    average: 0.069718
+    std: 0.0005
+  defendersLengthPercent:
+    average: 0.191549
+    std: 0.0005
+  midfieldersLengthPercent:
+    average: 0.438028
+    std: 0.0005
+  offensiveLengthPercent:
+    average: 0.685211
+    std: 0.0005
+  foosmanMass:
+    average: 0.03
+    std: 0.001
+  foosmanDepth:
+    average: 0.028
+    std: 0.0002
+  foosmanWidth:
+    average: 0.038
+    std: 0.0001
+  foosmanBodyHeight:
+    average: 0.044
+    std: 0.0002
+  foosmanFootHeight:
+    average: 0.01
+    std: 0.0001
+  foosmanFootWidth:
+    average: 0.023
+    std: 0.0001
+  foosmanShoulderHeight:
+    average: 0.014
+    std: 0.0001
+  foosmanHeadHeight:
+    average: 0.021
+    std: 0.0001
+  foosmanHeadWidth:
+    average: 0.015
+    std: 0.0001
+  foosmanHeadDepth:
+    average: 0.015
+    std: 0.0001

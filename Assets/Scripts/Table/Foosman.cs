@@ -51,9 +51,9 @@ public class Foosman : MonoBehaviour
         head.transform.localScale = new Vector3(tso.foosmanHeadDepth.GetValue(), tso.foosmanHeadHeight.GetValue(), tso.foosmanHeadWidth.GetValue());
         head.GetComponent<Renderer>().material.color = team == Team.RED ? m_foosballSettings.redColor : m_foosballSettings.blueColor;
 
-        GameObject shoulders = Instantiate(shouldersPrefab, transform.position + Vector3.up * (tso.rodDiameter / 2 + tso.foosmanShoulderHeight/2), shouldersPrefab.transform.rotation);
+        GameObject shoulders = Instantiate(shouldersPrefab, transform.position + Vector3.up * (tso.foosmanShoulderHeight / 2f), shouldersPrefab.transform.rotation);
         shoulders.transform.parent = transform;
-        shoulders.transform.localScale = new Vector3(tso.foosmanDepth.GetValue(), tso.foosmanShoulderHeight.GetValue(), tso.foosmanWidth.GetValue());
+        shoulders.transform.localScale = new Vector3(tso.foosmanDepth.GetValue(), tso.foosmanShoulderHeight + tso.rodDiameter, tso.foosmanWidth.GetValue());
         shoulders.GetComponent<Renderer>().material.color = team == Team.RED ? m_foosballSettings.redColor : m_foosballSettings.blueColor;
 
         GameObject body = Instantiate(bodyPrefab, transform.position + Vector3.down * (tso.rodDiameter / 2 + tso.foosmanBodyHeight / 2), bodyPrefab.transform.rotation);
