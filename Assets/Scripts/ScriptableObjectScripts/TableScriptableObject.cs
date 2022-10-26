@@ -87,10 +87,15 @@ public class TableScriptableObject : ScriptableObject
     [Header("Foosman Properties")]
     public ErrorFloat foosmanMass = new ErrorFloat(0.030f, 0.001f); // kg
     public ErrorFloat foosmanDepth = new ErrorFloat(0.028f, 0.0002f);
-    public ErrorFloat foosmanWidth = new ErrorFloat(0.038f, 0.0001f);
+    public ErrorFloat foosmanWidth = new ErrorFloat(0.034f, 0.0001f);
     public ErrorFloat foosmanBodyHeight = new ErrorFloat(0.044f, 0.0002f);
+    public ErrorFloat foosmanBodyTopDepth = new ErrorFloat(0.017f, 0.0002f);
+    public ErrorFloat foosmanBodyBottomDepth = new ErrorFloat(0.010f, 0.0002f);
+    public ErrorFloat foosmanBodyTopWidth = new ErrorFloat(0.026f, 0.0002f);
+    public ErrorFloat foosmanBodyBottomWidth = new ErrorFloat(0.017f, 0.0002f);
     public ErrorFloat foosmanFootHeight = new ErrorFloat(0.01f, 0.0001f);
     public ErrorFloat foosmanFootWidth = new ErrorFloat(0.023f, 0.0001f);
+    public ErrorFloat foosmanFootDepth = new ErrorFloat(0.012f, 0.0001f);
     public ErrorFloat foosmanShoulderHeight = new ErrorFloat(0.014f, 0.0001f);
     public ErrorFloat foosmanHeadHeight = new ErrorFloat(0.021f, 0.0001f);
     public ErrorFloat foosmanHeadWidth = new ErrorFloat(0.015f, 0.0001f);

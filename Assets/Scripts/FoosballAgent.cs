@@ -13,6 +13,12 @@ public class FoosballAgent : Agent
     [Header("Game Stats")]
     [SerializeField]
     public PlayerType playerType = PlayerType.PLAYER1;
+    public Team team = Team.RED;
+
+    public RodType leftHandRodType = RodType.NONE;
+    public RodType rightHandRodType = RodType.NONE;
+    public float leftHandPosition = 0f; // literal position
+    public float rightHandPosition = 0f; // literal position
 
     // Private vars
 
@@ -138,6 +144,8 @@ public class FoosballAgent : Agent
         // Actions, size = 9
 
         m_agentInfo.AddReward(-m_Existential);
+
+        envController.table.MoveTeam(actionBuffers.ContinuousActions, actionBuffers.DiscreteActions, team);
 
         //MoveAgent(actionBuffers.DiscreteActions, actionBuffers.ContinuousActions);
 

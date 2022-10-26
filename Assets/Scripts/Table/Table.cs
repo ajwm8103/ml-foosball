@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
 public class Table : MonoBehaviour
 {
@@ -116,5 +119,10 @@ public class Table : MonoBehaviour
         myBall.transform.localScale = Vector3.one * tso.ballDiameter.GetValue();
         myBall.myRigidbody.mass = tso.ballMass.GetValue();
         myBall.myRigidbody.velocity = Vector3.right * Random.Range(-0.2f, 0.2f);
+    }
+
+    public void MoveTeam(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions, Team actionTeam)
+    {
+        
     }
 }

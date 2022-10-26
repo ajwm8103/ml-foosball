@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a24c232867c44046976d54919c35363, type: 3}
-  m_Name: Hybrid
+  m_Name: 
   m_EditorClassIdentifier: 
   tableLength:
     average: 1.42
@@ -68,16 +68,31 @@ MonoBehaviour:
     average: 0.028
     std: 0.0002
   foosmanWidth:
-    average: 0.038
+    average: 0.034
     std: 0.0001
   foosmanBodyHeight:
     average: 0.044
+    std: 0.0002
+  foosmanBodyTopDepth:
+    average: 0.017
+    std: 0.0002
+  foosmanBodyBottomDepth:
+    average: 0.01
+    std: 0.0002
+  foosmanBodyTopWidth:
+    average: 0.026
+    std: 0.0002
+  foosmanBodyBottomWidth:
+    average: 0.017
     std: 0.0002
   foosmanFootHeight:
     average: 0.01
     std: 0.0001
   foosmanFootWidth:
     average: 0.023
+    std: 0.0001
+  foosmanFootDepth:
+    average: 0.012
     std: 0.0001
   foosmanShoulderHeight:
     average: 0.014
