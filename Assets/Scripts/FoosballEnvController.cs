@@ -6,6 +6,7 @@ public enum TableType { ENGSCI };
 public enum RulesType { ENGSCI, GLOBAL };
 public enum PlayerType { PLAYER1, PLAYER2, STAND, BOT};
 public enum RodType { GOALIE, DEFENDERS, MIDFIELDERS, OFFENSIVE, NONE };
+public enum ArmHandedness { LEFT, RIGHT };
 public enum Team { RED, BLUE };
 public enum DiscreteActionKeyDoubles { GOALIE_HOLD, DEFENDERS_HOLD, MIDFIELDERS_HOLD, OFFENSIVE_HOLD };
 public enum DiscreteActionKeySingles { GOALIE_LEFT, DEFENDERS_LEFT, MIDFIELDERS_LEFT, OFFENSIVE_LEFT, GOALIE_RIGHT, DEFENDERS_RIGHT, MIDFIELDERS_RIGHT, OFFENSIVE_RIGHT };
@@ -45,7 +46,7 @@ public class FoosballEnvController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        table.Setup(this);
     }
 
     // Update is called once per frame

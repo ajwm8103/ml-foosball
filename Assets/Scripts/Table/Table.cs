@@ -12,12 +12,16 @@ public class Table : MonoBehaviour
     public GameObject tableFloorPrefab;
     public GameObject tableWallPrefab;
     public Ball ballPrefab;
+    public GameObject handPosPrefab;
+    public Arm armPrefab;
 
     [Header("Table Parameters")]
     public TableScriptableObject tso;
 
     // Private component references
     Ball myBall;
+    Dictionary<Team, Dictionary<ArmHandedness, Arm>> arms;
+    FoosballEnvController m_foosballEnvController;
 
     Rod[] rods;
 
@@ -32,6 +36,10 @@ public class Table : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Setup(FoosballEnvController foosballEnvController){
+        m_foosballEnvController = foosballEnvController
     }
 
     public void Reset()
@@ -110,6 +118,23 @@ public class Table : MonoBehaviour
             rod.tso = tso;
             rod.GenerateFoosmen();
         }
+
+        // Create arms
+        Transform armHolder = transform.Find("Arm Holder");
+        if (armHolder != null){
+            for (Team armTeam = 0; (int)armTeam < 2; armTeam++)
+            {
+                for (ArmHandedness armHandedness = 0; (int)armHandedness < 2; armHandedness++)
+                {
+                    Arm arm = Instantiate(armPrefab, transform.position
+                    + Vector3.forward * (tso.tableWidth * (armTeam == Team.RED ? -1 : 1))
+                    + Vector3.right*(tso.tableLength / 4f*(armHandedness == ArmHandedness.LEFT ? -1 : 1)), armPrefab.transform.rotation);
+
+                    arm.Setup(this, foosballEnvController);
+                }
+            }
+        }
+            
     }
 
     private void StartPoint()
@@ -121,6 +146,16 @@ public class Table : MonoBehaviour
         myBall.myRigidbody.velocity = Vector3.right * Random.Range(-0.2f, 0.2f);
     }
 
+
+    public void DisplayHand(Team handTeam, FoosballAgent agent){
+        /*
+        public RodType leftHandRodType = RodType.NONE;
+        public RodType rightHandRodType = RodType.NONE;
+        public float leftHandPosition = 0f; // literal position
+        public float rightHandPosition = 0f; // literal position
+        */
+
+    }
     public void MoveTeam(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions, Team actionTeam)
     {
         

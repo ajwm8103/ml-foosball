@@ -247,6 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardType: 0
   rulesType: 0
+  handVelocity: 0.88
   effectsAmount: 1
   redColor: {r: 1, g: 0, b: 0, a: 0}
   blueColor: {r: 0, g: 0.37992668, b: 1, a: 0}
@@ -384,6 +385,7 @@ MonoBehaviour:
   maxSteps: 1000
   agents: []
   totalSteps: 0
+  table: {fileID: 0}
 --- !u!4 &1984566026
 Transform:
   m_ObjectHideFlags: 0

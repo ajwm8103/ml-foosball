@@ -153,6 +153,7 @@ public class FoosballAgent : Agent
         /*
         if (m_foosballSettings.effectsAmount != 0)
         {
+            
             m_damageText.text = damage.ToString();
             if (stunFrames > 0)
             {
