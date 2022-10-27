@@ -24,7 +24,9 @@ public class Table : MonoBehaviour
     Dictionary<Team, Dictionary<ArmHandedness, Arm>> arms;
     FoosballEnvController m_foosballEnvController;
 
+    // Useful info
     public Rod[] rods;
+    public Dictionary<RodType, float> rodPercent;
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +61,14 @@ public class Table : MonoBehaviour
             //Debug.Log(ef.GetValue());
             //Debug.Log("-");
         }
+
+        // Calculate useful info
+        rodPercent = new Dictionary<RodType, float> {
+            {RodType.GOALIE, tso.goalieLengthPercent.GetValue() },
+            {RodType.DEFENDERS, tso.defendersLengthPercent.GetValue() },
+            {RodType.MIDFIELDERS, tso.midfieldersLengthPercent.GetValue() },
+            {RodType.OFFENSIVE, tso.offensiveLengthPercent.GetValue() }
+        };
 
         RegenerateTable();
     }

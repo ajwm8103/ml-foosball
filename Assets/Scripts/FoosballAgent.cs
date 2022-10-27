@@ -53,6 +53,19 @@ public class FoosballAgent : Agent
         }
     }
 
+    public struct RodAction
+    {
+        public float torque;
+        public float force;
+        public bool gripped;
+
+        public RodAction(float torque, float force, bool gripped){
+            this.torque = torque;
+            this.force = force;
+            this.gripped = gripped;
+        }
+    }
+
     // cause i basically need an input for each rod to control the spin. so i'm thinking grip + torque, both with constraints to human levels
     // but...how does grip work..???? high grip + high torque means?
 
@@ -142,21 +155,100 @@ public class FoosballAgent : Agent
     public void Move(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions)
     {
         // If hand not on desired rod, start moving it there. Otherwise twist!
+
+        // Action data
         RodType leftHandDesiredType = (RodType)discreteActions[(int)DiscreteActionIndexSingles.LEFT_TYPE];
         RodType rightHandDesiredType = (RodType)discreteActions[(int)DiscreteActionIndexSingles.RIGHT_TYPE];
+        float leftDesiredTorque = continuousActions[(int)ContinuousActionIndexSingles.LEFT_TORQUE];
+        float leftDesiredForce = continuousActions[(int)ContinuousActionIndexSingles.LEFT_FORCE];
+        float rightDesiredTorque = continuousActions[(int)ContinuousActionIndexSingles.RIGHT_TORQUE];
+        float rightDesiredForce = continuousActions[(int)ContinuousActionIndexSingles.RIGHT_FORCE];
 
-        Dictionary<RodType, float> rodPos = new Dictionary<RodType, float> {
-            
+        Dictionary<RodType, float> rodPercent = new Dictionary<RodType, float> {
+            {RodType.GOALIE, envController.table.tso.goalieLengthPercent.GetValue() },
+            {RodType.DEFENDERS, envController.table.tso.defendersLengthPercent.GetValue() },
+            {RodType.MIDFIELDERS, envController.table.tso.midfieldersLengthPercent.GetValue() },
+            {RodType.OFFENSIVE, envController.table.tso.offensiveLengthPercent.GetValue() }
         };
+        Dictionary<RodType, RodAction> rodActions = new Dictionary<RodType, RodAction> {
+            {RodType.GOALIE, new RodAction(0f, 0f, false) },
+            {RodType.DEFENDERS, new RodAction(0f, 0f, false) },
+            {RodType.MIDFIELDERS, new RodAction(0f, 0f, false) },
+            {RodType.OFFENSIVE, new RodAction(0f, 0f, false) }
+        };
+
         // Left
-        if (Mathf.Abs(leftHandPosition-) < m_foosballSettings.handGripMaxDistance){
-            
+        if (leftHandDesiredType == RodType.NONE){
+            // Wants to let go of the rod, ok
+            leftHandRodType = RodType.NONE;
         } else {
-            
+            // Trying to hold a rod
+            float rodPos = envController.table.tso.tableLength * rodPercent[leftHandDesiredType];
+            if (Mathf.Abs(leftHandPosition - rodPos) < m_foosballSettings.handGripMaxDistance)
+            {
+                // Can act
+                // Set left hand 
+                leftHandRodType = leftHandDesiredType;
+                rodActions[leftHandRodType] = new RodAction(leftDesiredTorque, leftDesiredForce, true);
+
+            }
+            else
+            {
+                // Move the hand towards the target at hand move speed
+                if (rodPos > leftHandPosition){
+                    leftHandPosition = Mathf.Min(rodPos, m_foosballSettings.handVelocity * Time.deltaTime);
+                } else {
+                    leftHandPosition = Mathf.Max(rodPos, -m_foosballSettings.handVelocity * Time.deltaTime);
+                }
+                // If within the tolerance, snap it to the position
+                if (Mathf.Abs(leftHandPosition - rodPos) < m_foosballSettings.handGripMaxDistance)
+                {
+                    leftHandPosition = rodPos;
+                }
+            }
         }
 
         // Move the rods
         envController.table.MoveTeam(continuousActions, discreteActions, team);
+    }
+
+    public void HandleHand(RodType handDesiredType, ref float handPosition, float desiredTorque, float desiredForce, ref Dictionary<RodType, RodAction> rodActions, ref RodType handRodType)
+    {
+        if (handDesiredType == RodType.NONE)
+        {
+            // Wants to let go of the rod, ok
+            handRodType = RodType.NONE;
+        }
+        else
+        {
+            // Trying to hold a rod
+            float rodPos = envController.table.tso.tableLength * envController.table.rodPercent[handDesiredType];
+            if (Mathf.Abs(handPosition - rodPos) < m_foosballSettings.handGripMaxDistance)
+            {
+                // Can act
+                // Set left hand 
+                handRodType = handDesiredType;
+                rodActions[handRodType] = new RodAction(desiredTorque, desiredForce, true);
+
+            }
+            else
+            {
+                // Move the hand towards the target at hand move speed
+                if (rodPos > handPosition)
+                {
+                    handPosition = Mathf.Min(rodPos, m_foosballSettings.handVelocity * Time.deltaTime);
+                }
+                else
+                {
+                    handPosition = Mathf.Max(rodPos, -m_foosballSettings.handVelocity * Time.deltaTime);
+                }
+                // If within the tolerance, snap it to the position
+                if (Mathf.Abs(handPosition - rodPos) < m_foosballSettings.handGripMaxDistance)
+                {
+                    handPosition = rodPos;
+                }
+            }
+        }
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
