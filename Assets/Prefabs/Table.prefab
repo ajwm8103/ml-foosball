@@ -47,4 +47,6 @@ MonoBehaviour:
   tableFloorPrefab: {fileID: 8260450879924867343, guid: d17087c701cd0d447b09de9af321d4e8, type: 3}
   tableWallPrefab: {fileID: 658396215072483238, guid: 0e68eea7e68e74546bcc9ba97f8cc6db, type: 3}
   ballPrefab: {fileID: -1351514631545189966, guid: cab8e25a9392fd94dafb6c382d248fee, type: 3}
+  handPosPrefab: {fileID: 8963641305887551298, guid: 08144916bb51f6843ba2033610bf69dd, type: 3}
+  armPrefab: {fileID: 4835706330738279299, guid: 0eeb2cc380304334f8e85afcc450c581, type: 3}
   tso: {fileID: 0}

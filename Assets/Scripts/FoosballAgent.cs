@@ -139,13 +139,35 @@ public class FoosballAgent : Agent
         return states;
     }
 
+    public void Move(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions)
+    {
+        // If hand not on desired rod, start moving it there. Otherwise twist!
+        RodType leftHandDesiredType = (RodType)discreteActions[(int)DiscreteActionIndexSingles.LEFT_TYPE];
+        RodType rightHandDesiredType = (RodType)discreteActions[(int)DiscreteActionIndexSingles.RIGHT_TYPE];
+
+        Dictionary<RodType, float> rodPos = new Dictionary<RodType, float> {
+            
+        };
+        // Left
+        if (Mathf.Abs(leftHandPosition-) < m_foosballSettings.handGripMaxDistance){
+            
+        } else {
+            
+        }
+
+        // Move the rods
+        envController.table.MoveTeam(continuousActions, discreteActions, team);
+    }
+
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         // Actions, size = 9
 
         m_agentInfo.AddReward(-m_Existential);
 
-        envController.table.MoveTeam(actionBuffers.ContinuousActions, actionBuffers.DiscreteActions, team);
+        // Move stuff
+
+        Move(actionBuffers.ContinuousActions, actionBuffers.DiscreteActions);
 
         //MoveAgent(actionBuffers.DiscreteActions, actionBuffers.ContinuousActions);
 
@@ -201,37 +223,30 @@ public class FoosballAgent : Agent
         discreteActionsOut[(int)DiscreteActionKey.DEFENDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.MIDFIELDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.OFFENSIVE_HOLD] = 1;*/
-
+        discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.MIDFIELDERS;
+        discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.OFFENSIVE;
 
         if (playerType == PlayerType.PLAYER1)
         {
             if (Input.GetKey(KeyCode.W))
             {
-                continuousActionsOut[(int)ContinuousActionKey.GOALIE_FORCE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.DEFENDERS_FORCE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.MIDFIELDERS_FORCE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.OFFENSIVE_FORCE] = 1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_FORCE] = 1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_FORCE] = 1;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                continuousActionsOut[(int)ContinuousActionKey.GOALIE_FORCE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.DEFENDERS_FORCE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.MIDFIELDERS_FORCE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.OFFENSIVE_FORCE] = -1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_FORCE] = -1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_FORCE] = -1;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                continuousActionsOut[(int)ContinuousActionKey.GOALIE_TORQUE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.DEFENDERS_TORQUE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.MIDFIELDERS_TORQUE] = 1;
-                continuousActionsOut[(int)ContinuousActionKey.OFFENSIVE_TORQUE] = 1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_TORQUE] = 1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_TORQUE] = 1;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                continuousActionsOut[(int)ContinuousActionKey.GOALIE_TORQUE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.DEFENDERS_TORQUE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.MIDFIELDERS_TORQUE] = -1;
-                continuousActionsOut[(int)ContinuousActionKey.OFFENSIVE_TORQUE] = -1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_TORQUE] = -1;
+                continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_TORQUE] = -1;
             }
         }
         else if (playerType == PlayerType.PLAYER2)

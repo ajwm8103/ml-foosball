@@ -5,14 +5,14 @@ using UnityEngine;
 public class Arm : MonoBehaviour
 {
     // Start is called before the first frame update
-    GameObject handPosObject;
-    ArmHandedness handedness;
+    public ArmHandedness handedness;
 
     // Private vars
 
     // References to components
     FoosballSettings m_foosballSettings;
     FoosballEnvController m_foosballEnvController;
+    GameObject handPosObject;
     Table m_table;
 
     void Start()
@@ -20,10 +20,11 @@ public class Arm : MonoBehaviour
         m_foosballSettings = FindObjectOfType<FoosballSettings>();
     }
 
-    public void Setup(Table table, FoosballEnvController foosballEnvController)
+    public void Setup(Table table, FoosballEnvController foosballEnvController, GameObject handPosObject)
     {
         m_table = table;
         m_foosballEnvController = foosballEnvController;
+        this.handPosObject = handPosObject;
     }
 
     public void UpdateHand(float handPosition, RodType handRodType){

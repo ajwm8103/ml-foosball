@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
@@ -23,7 +24,7 @@ public class Table : MonoBehaviour
     Dictionary<Team, Dictionary<ArmHandedness, Arm>> arms;
     FoosballEnvController m_foosballEnvController;
 
-    Rod[] rods;
+    public Rod[] rods;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +40,7 @@ public class Table : MonoBehaviour
     }
 
     public void Setup(FoosballEnvController foosballEnvController){
-        m_foosballEnvController = foosballEnvController
+        m_foosballEnvController = foosballEnvController;
     }
 
     public void Reset()
@@ -86,6 +87,21 @@ public class Table : MonoBehaviour
         // Optionally add ramps
 
         // Create rods
+        Transform rodHolder = transform.Find("Rod Holder");
+        if (rodHolder != null)
+        {
+            foreach (Transform child in rodHolder)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        else
+        {
+            rodHolder = new GameObject().transform;
+            rodHolder.parent = transform;
+            rodHolder.name = "Rod Holder";
+        }
+
         rods = new Rod[8];
         Dictionary<RodType, ErrorFloat> rodToLengthPercent = new Dictionary<RodType, ErrorFloat>{
             {RodType.GOALIE, tso.goalieLengthPercent },
@@ -103,6 +119,8 @@ public class Table : MonoBehaviour
             rod.rodType = rodType;
             rod.team = Team.RED;
             rod.transform.localScale = new Vector3(tso.rodDiameter.GetValue(), 0.5f, tso.rodDiameter.GetValue());
+            rod.name = string.Format("Red {0} Rod", Enum.GetName(typeof(RodType), rodType));
+            rod.transform.parent = rodHolder;
             rod.tso = tso;
             rod.GenerateFoosmen();
         }
@@ -115,6 +133,8 @@ public class Table : MonoBehaviour
             rod.rodType = rodType;
             rod.team = Team.BLUE;
             rod.transform.localScale = new Vector3(tso.rodDiameter.GetValue(), 0.5f, tso.rodDiameter.GetValue());
+            rod.name = string.Format("Blue {0} Rod", Enum.GetName(typeof(RodType), rodType));
+            rod.transform.parent = rodHolder;
             rod.tso = tso;
             rod.GenerateFoosmen();
         }
@@ -122,19 +142,35 @@ public class Table : MonoBehaviour
         // Create arms
         Transform armHolder = transform.Find("Arm Holder");
         if (armHolder != null){
-            for (Team armTeam = 0; (int)armTeam < 2; armTeam++)
+            foreach (Transform child in armHolder)
             {
-                for (ArmHandedness armHandedness = 0; (int)armHandedness < 2; armHandedness++)
-                {
-                    Arm arm = Instantiate(armPrefab, transform.position
-                    + Vector3.forward * (tso.tableWidth * (armTeam == Team.RED ? -1 : 1))
-                    + Vector3.right*(tso.tableLength / 4f*(armHandedness == ArmHandedness.LEFT ? -1 : 1)), armPrefab.transform.rotation);
+                Destroy(child.gameObject);
+            }
+        } else {
+            armHolder = new GameObject().transform;
+            armHolder.parent = transform;
+            armHolder.name = "Arm Holder";
+        }
 
-                    arm.Setup(this, foosballEnvController);
-                }
+        for (Team armTeam = 0; (int)armTeam < 2; armTeam++)
+        {
+            for (ArmHandedness armHandedness = 0; (int)armHandedness < 2; armHandedness++)
+            {
+                Vector3 armPos = transform.position
+                + Vector3.forward * (tso.tableWidth * (armTeam == Team.RED ? -1 : 1))
+                + Vector3.right * (tso.tableLength / 4f * (armHandedness == ArmHandedness.LEFT ? -1 : 1));
+
+                GameObject handPosObject = Instantiate(handPosPrefab, armPos, handPosPrefab.transform.rotation);
+                Arm arm = Instantiate(armPrefab, armPos, armPrefab.transform.rotation);
+
+                arm.Setup(this, m_foosballEnvController, handPosObject);
+                arm.name = string.Format("{0} {1} Arm", Enum.GetName(typeof(Team), armTeam), Enum.GetName(typeof(ArmHandedness), armHandedness));
+                handPosObject.transform.parent = arm.transform;
+                arm.handedness = armHandedness;
+                arm.transform.parent = armHolder;
             }
         }
-            
+
     }
 
     private void StartPoint()
@@ -143,7 +179,7 @@ public class Table : MonoBehaviour
         myBall = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         myBall.transform.localScale = Vector3.one * tso.ballDiameter.GetValue();
         myBall.myRigidbody.mass = tso.ballMass.GetValue();
-        myBall.myRigidbody.velocity = Vector3.right * Random.Range(-0.2f, 0.2f);
+        myBall.myRigidbody.velocity = Vector3.right * UnityEngine.Random.Range(-0.2f, 0.2f);
     }
 
 
@@ -158,6 +194,7 @@ public class Table : MonoBehaviour
     }
     public void MoveTeam(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions, Team actionTeam)
     {
+        // Get acting agent
         
     }
 }

@@ -38,7 +38,6 @@ public class Foosman : MonoBehaviour
         GameObject torso = Instantiate(torsoPrefab, transform.position, torsoPrefab.transform.rotation);
         torso.transform.parent = transform;
         torso.transform.localScale = new Vector3(tso.foosmanDepth.GetValue(), 0.5f*tso.foosmanWidth.GetValue(), tso.rodDiameter.GetValue());
-        Debug.Log(m_foosballSettings);
         torso.GetComponent<Renderer>().material.color = team == Team.RED ? m_foosballSettings.redColor : m_foosballSettings.blueColor;
         
         GameObject foot = Instantiate(footPrefab, transform.position + Vector3.down*(tso.rodDiameter/2 + tso.foosmanBodyHeight + tso.foosmanFootHeight/2), footPrefab.transform.rotation);
