@@ -5,6 +5,28 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
+public struct FoosmenState
+{
+    public float position;
+    public float angle;
+    public float velocity;
+    public float angularVelocity;
+    public FoosmenState(float position, float angle, float velocity, float angularVelocity)
+    {
+        this.position = position;
+        this.angle = angle;
+        this.velocity = velocity;
+        this.angularVelocity = angularVelocity;
+    }
+
+    public void AddObservations(VectorSensor sensor)
+    {
+        sensor.AddObservation(position);
+        sensor.AddObservation(angle);
+        sensor.AddObservation(velocity);
+        sensor.AddObservation(angularVelocity);
+    }
+}
 public class FoosballAgent : Agent
 {
 
@@ -29,29 +51,6 @@ public class FoosballAgent : Agent
     FoosballEnvController.AgentInfo m_agentInfo;
 
     EnvironmentParameters m_ResetParams;
-
-    public struct FoosmenState
-    {
-        public float position;
-        public float angle;
-        public float velocity;
-        public float angularVelocity;
-        public FoosmenState(float position, float angle, float velocity, float angularVelocity)
-        {
-            this.position = position;
-            this.angle = angle;
-            this.velocity = velocity;
-            this.angularVelocity = angularVelocity;
-        }
-
-        public void AddObservations(VectorSensor sensor)
-        {
-            sensor.AddObservation(position);
-            sensor.AddObservation(angle);
-            sensor.AddObservation(velocity);
-            sensor.AddObservation(angularVelocity);
-        }
-    }
 
     public struct RodAction
     {
@@ -145,10 +144,11 @@ public class FoosballAgent : Agent
     public FoosmenState[] GetFoosmenStates()
     {
         FoosmenState[] states = new FoosmenState[4];
-        states[0] = new FoosmenState();
-        states[1] = new FoosmenState();
-        states[2] = new FoosmenState();
-        states[3] = new FoosmenState();
+        for (int i = 0; i < 4; i++)
+        {
+            Rod rod = envController.table.rods[i + ((int)team) * 4];
+            states[i] = rod.GetState();
+        }
         return states;
     }
 
@@ -178,7 +178,7 @@ public class FoosballAgent : Agent
         };
 
         // Left
-        if (leftHandDesiredType == RodType.NONE){
+        /*if (leftHandDesiredType == RodType.NONE){
             // Wants to let go of the rod, ok
             leftHandRodType = RodType.NONE;
         } else {
@@ -190,7 +190,7 @@ public class FoosballAgent : Agent
                 // Set left hand 
                 leftHandRodType = leftHandDesiredType;
                 rodActions[leftHandRodType] = new RodAction(leftDesiredTorque, leftDesiredForce, true);
-
+                Debug.Log(le)
             }
             else
             {
@@ -206,7 +206,10 @@ public class FoosballAgent : Agent
                     leftHandPosition = rodPos;
                 }
             }
-        }
+        }*/
+        HandleHand(leftHandDesiredType, ref leftHandPosition, leftDesiredTorque, leftDesiredForce, ref rodActions, ref leftHandRodType);
+        HandleHand(rightHandDesiredType, ref rightHandPosition, rightDesiredTorque, rightDesiredForce, ref rodActions, ref rightHandRodType);
+
 
         // Move the rods
         envController.table.MoveTeam(continuousActions, discreteActions, team);
@@ -229,7 +232,7 @@ public class FoosballAgent : Agent
                 // Set left hand 
                 handRodType = handDesiredType;
                 rodActions[handRodType] = new RodAction(desiredTorque, desiredForce, true);
-
+                Debug.Log(desiredTorque);
             }
             else
             {
@@ -311,6 +314,7 @@ public class FoosballAgent : Agent
     {
         var discreteActionsOut = actionsOut.DiscreteActions;
         var continuousActionsOut = actionsOut.ContinuousActions;
+        Debug.Log("bonk");
         /*discreteActionsOut[(int)DiscreteActionKey.GOALIE_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.DEFENDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.MIDFIELDERS_HOLD] = 1;
@@ -332,6 +336,7 @@ public class FoosballAgent : Agent
             }
             if (Input.GetKey(KeyCode.A))
             {
+                Debug.Log("pog champ");
                 continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_TORQUE] = 1;
                 continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_TORQUE] = 1;
             }

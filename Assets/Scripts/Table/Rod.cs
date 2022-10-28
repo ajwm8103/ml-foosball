@@ -11,15 +11,19 @@ public class Rod : MonoBehaviour
     public Foosman foosmanPrefab;
     public GameObject bumperPrefab;
 
+    [Header("Data")]
     public RodType rodType;
     public Team team;
+    public Rigidbody rigidbody;
+    [SerializeField]
+    private float position;
     [HideInInspector]
     public TableScriptableObject tso;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     public void GenerateFoosmen(){
@@ -72,9 +76,14 @@ public class Rod : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public FoosmenState GetState(){
         
+        FoosmenState s = new FoosmenState();
+        return s;
+    }
+
+    // Done on post-action!!! Also has improved euler spring stuff.
+    public void UpdatePosition(){
+
     }
 }

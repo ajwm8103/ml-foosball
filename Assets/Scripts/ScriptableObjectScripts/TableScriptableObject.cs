@@ -64,6 +64,7 @@ public class TableScriptableObject : ScriptableObject
     public ErrorFloat tableWidth = new ErrorFloat(0.77f, 0.005f);
     public ErrorFloat tableDepth = new ErrorFloat(0.10f, 0.005f);
     public bool slopes = false;
+    public ErrorFloat bumperLength = new ErrorFloat(0.02f, 0.002f);
     public ErrorFloat kBumper = new ErrorFloat(0.10f, 0.005f); // N/m
 
     [Header("Ball Properties")]
