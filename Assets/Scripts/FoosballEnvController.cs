@@ -48,6 +48,7 @@ public class FoosballEnvController : MonoBehaviour
     void Start()
     {
         table.Setup(this);
+        ResetEnv();
     }
 
     // Update is called once per frame
@@ -72,5 +73,29 @@ public class FoosballEnvController : MonoBehaviour
             agentInfo.agent.ResetAgent();
             // Do something for respawning, randomize spawn points + instant spawn at start
         }
+    }
+
+    public void AttemptPostAction(){
+        // Check if PostAction is valid
+        bool valid = true;
+        foreach (AgentInfo agentInfo in agents)
+        {
+            if (!agentInfo.agent.hasActed)
+            {
+                valid = false;
+                break;
+            }
+        }
+        if (!valid) return;
+
+        foreach (AgentInfo agentInfo in agents)
+        {
+            //Debug.Log(string.Format("{0} {1}", agentInfo.agent.team, agentInfo.totalReward));
+            //agentInfo.agent.PostAction();
+
+            agentInfo.agent.hasActed = false;
+        }
+
+        table.PostAction();
     }
 }

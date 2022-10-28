@@ -20,8 +20,10 @@ public class Rod : MonoBehaviour
     [HideInInspector]
     public TableScriptableObject tso;
 
+    private RodAction actionToDo;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
     }
@@ -82,8 +84,14 @@ public class Rod : MonoBehaviour
         return s;
     }
 
-    // Done on post-action!!! Also has improved euler spring stuff.
-    public void UpdatePosition(){
+    public void SetState(RodAction action){
+        actionToDo = action;
+    }
 
+    // Done on post-action!!! Also has improved euler spring stuff.
+    public void PostAction(){
+        // Apply the action, then compute bumper if needed
+        rigidbody.AddTorque(15*Vector3.back*actionToDo.torque, ForceMode.Force);
+        Debug.Log(actionToDo.torque);
     }
 }

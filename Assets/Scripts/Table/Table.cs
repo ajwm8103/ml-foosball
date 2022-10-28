@@ -19,9 +19,12 @@ public class Table : MonoBehaviour
     [Header("Table Parameters")]
     public TableScriptableObject tso;
 
+    // Public component references
+    [HideInInspector]
+    public Dictionary<Team, Dictionary<ArmHandedness, Arm>> arms;
+
     // Private component references
     Ball myBall;
-    Dictionary<Team, Dictionary<ArmHandedness, Arm>> arms;
     FoosballEnvController m_foosballEnvController;
 
     // Useful info
@@ -178,6 +181,7 @@ public class Table : MonoBehaviour
                 handPosObject.transform.parent = arm.transform;
                 arm.handedness = armHandedness;
                 arm.transform.parent = armHolder;
+                arms[armTeam][armHandedness] = arm;
             }
         }
 
@@ -202,9 +206,19 @@ public class Table : MonoBehaviour
         */
 
     }
-    public void MoveTeam(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions, Team actionTeam)
+    public void MoveTeam(Dictionary<RodType, RodAction> rodActions, Team actionTeam)
     {
-        // Get acting agent
-        
+        int offset = 4 * ((int)actionTeam);
+        for (int i = 0; i < 4; i++)
+        {
+            rods[offset + i].SetState(rodActions[(RodType)i]);
+        }
+    }
+
+    public void PostAction(){
+        foreach (Rod rod in rods)
+        {
+            rod.PostAction();
+        }
     }
 }

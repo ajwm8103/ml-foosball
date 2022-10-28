@@ -27,10 +27,28 @@ public struct FoosmenState
         sensor.AddObservation(angularVelocity);
     }
 }
+
+public struct RodAction
+{
+    public float torque;
+    public float force;
+    public bool gripped;
+
+    public RodAction(float torque, float force, bool gripped)
+    {
+        this.torque = torque;
+        this.force = force;
+        this.gripped = gripped;
+    }
+}
+
 public class FoosballAgent : Agent
 {
 
     private float m_Existential;
+
+    [Header("Component References")]
+    public FoosballAgent opponent;
 
     [Header("Game Stats")]
     [SerializeField]
@@ -42,28 +60,17 @@ public class FoosballAgent : Agent
     public float leftHandPosition = 0f; // literal position
     public float rightHandPosition = 0f; // literal position
 
+    // States for action
+    public bool hasActed = false;
+
     // Private vars
 
     // References to components
-    FoosballAgent m_opponent;
     FoosballEnvController envController;
     FoosballSettings m_foosballSettings;
     FoosballEnvController.AgentInfo m_agentInfo;
 
     EnvironmentParameters m_ResetParams;
-
-    public struct RodAction
-    {
-        public float torque;
-        public float force;
-        public bool gripped;
-
-        public RodAction(float torque, float force, bool gripped){
-            this.torque = torque;
-            this.force = force;
-            this.gripped = gripped;
-        }
-    }
 
     // cause i basically need an input for each rod to control the spin. so i'm thinking grip + torque, both with constraints to human levels
     // but...how does grip work..???? high grip + high torque means?
@@ -111,6 +118,7 @@ public class FoosballAgent : Agent
     public void ResetAgent()
     {
         // Reset positions, velocities, angular velocities
+        hasActed = false;
     }
 
     // Called to start the game
@@ -131,7 +139,7 @@ public class FoosballAgent : Agent
         }
 
         // Opponent state
-        FoosmenState[] opponentStates = m_opponent.GetFoosmenStates();
+        FoosmenState[] opponentStates = opponent.GetFoosmenStates();
         foreach (FoosmenState state in opponentStates)
         {
             state.AddObservations(sensor);
@@ -211,8 +219,11 @@ public class FoosballAgent : Agent
         HandleHand(rightHandDesiredType, ref rightHandPosition, rightDesiredTorque, rightDesiredForce, ref rodActions, ref rightHandRodType);
 
 
-        // Move the rods
-        envController.table.MoveTeam(continuousActions, discreteActions, team);
+        // Set the rod actions
+        envController.table.MoveTeam(rodActions, team);
+
+        hasActed = true;
+        envController.AttemptPostAction();
     }
 
     public void HandleHand(RodType handDesiredType, ref float handPosition, float desiredTorque, float desiredForce, ref Dictionary<RodType, RodAction> rodActions, ref RodType handRodType)
@@ -239,11 +250,11 @@ public class FoosballAgent : Agent
                 // Move the hand towards the target at hand move speed
                 if (rodPos > handPosition)
                 {
-                    handPosition = Mathf.Min(rodPos, m_foosballSettings.handVelocity * Time.deltaTime);
+                    handPosition = Mathf.Min(rodPos, handPosition + m_foosballSettings.handVelocity * Time.deltaTime);
                 }
                 else
                 {
-                    handPosition = Mathf.Max(rodPos, -m_foosballSettings.handVelocity * Time.deltaTime);
+                    handPosition = Mathf.Max(rodPos, handPosition - m_foosballSettings.handVelocity * Time.deltaTime);
                 }
                 // If within the tolerance, snap it to the position
                 if (Mathf.Abs(handPosition - rodPos) < m_foosballSettings.handGripMaxDistance)
@@ -267,32 +278,14 @@ public class FoosballAgent : Agent
         //MoveAgent(actionBuffers.DiscreteActions, actionBuffers.ContinuousActions);
 
         // Graphics
-        /*
+        
         if (m_foosballSettings.effectsAmount != 0)
         {
-            
-            m_damageText.text = damage.ToString();
-            if (stunFrames > 0)
-            {
-                m_legendSprite.color = stunColor;
-                //m_capsuleSprite.color = stunColor;
-            }
-            else if (m_sprinting)
-            {
-                m_legendSprite.color = sprintingColor;
-                //m_capsuleSprite.color = sprintingColor;
-            }
-            else
-            {
-                m_legendSprite.color = defaultColor;
-                //m_capsuleSprite.color = defaultColor;
-            }
-
-            // Facing
-            m_legendSprite.flipX = facingDirection == -1;
-
-            envController.DisplayAction(team, teamPosition, actionBuffers.DiscreteActions);
-        }*/
+            //Arm leftArm = envController.table.arms[team][ArmHandedness.LEFT];
+            //Arm rightArm = envController.table.arms[team][ArmHandedness.RIGHT];
+            //if (leftArm != null) leftArm.UpdateHand(leftHandPosition, leftHandRodType);
+            //if (rightArm != null) rightArm.UpdateHand(rightHandPosition, rightHandRodType);
+        }
 
         // Rewards
 
@@ -314,13 +307,10 @@ public class FoosballAgent : Agent
     {
         var discreteActionsOut = actionsOut.DiscreteActions;
         var continuousActionsOut = actionsOut.ContinuousActions;
-        Debug.Log("bonk");
         /*discreteActionsOut[(int)DiscreteActionKey.GOALIE_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.DEFENDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.MIDFIELDERS_HOLD] = 1;
         discreteActionsOut[(int)DiscreteActionKey.OFFENSIVE_HOLD] = 1;*/
-        discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.MIDFIELDERS;
-        discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.OFFENSIVE;
 
         if (playerType == PlayerType.PLAYER1)
         {
@@ -336,7 +326,6 @@ public class FoosballAgent : Agent
             }
             if (Input.GetKey(KeyCode.A))
             {
-                Debug.Log("pog champ");
                 continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_TORQUE] = 1;
                 continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_TORQUE] = 1;
             }
@@ -344,6 +333,39 @@ public class FoosballAgent : Agent
             {
                 continuousActionsOut[(int)ContinuousActionIndexSingles.LEFT_TORQUE] = -1;
                 continuousActionsOut[(int)ContinuousActionIndexSingles.RIGHT_TORQUE] = -1;
+            }
+
+            if (Input.GetKey(KeyCode.Alpha1))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.GOALIE;
+            }
+            if (Input.GetKey(KeyCode.Alpha2))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.DEFENDERS;
+            }
+            if (Input.GetKey(KeyCode.Alpha3))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.MIDFIELDERS;
+            }
+            if (Input.GetKey(KeyCode.Alpha4))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.OFFENSIVE;
+            }
+            if (Input.GetKey(KeyCode.Alpha5))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.GOALIE;
+            }
+            if (Input.GetKey(KeyCode.Alpha6))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.DEFENDERS;
+            }
+            if (Input.GetKey(KeyCode.Alpha7))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.MIDFIELDERS;
+            }
+            if (Input.GetKey(KeyCode.Alpha8))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.OFFENSIVE;
             }
         }
         else if (playerType == PlayerType.PLAYER2)
