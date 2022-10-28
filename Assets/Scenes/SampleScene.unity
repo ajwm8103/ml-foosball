@@ -351,8 +351,10 @@ MonoBehaviour:
   handVelocity: 1.6
   handGripMaxDistance: 0.07
   effectsAmount: 1
-  redColor: {r: 1, g: 0, b: 0, a: 0}
-  blueColor: {r: 0, g: 0.37992668, b: 1, a: 0}
+  redColor: {r: 1, g: 0, b: 0, a: 1}
+  blueColor: {r: 0, g: 0.37992668, b: 1, a: 1}
+  activeHandColor: {r: 1, g: 0, b: 0, a: 0.4392157}
+  inactiveHandColor: {r: 0, g: 0, b: 0, a: 0.4392157}
 --- !u!4 &754861633
 Transform:
   m_ObjectHideFlags: 0
@@ -536,7 +538,7 @@ MonoBehaviour:
   MaxStep: 0
   opponent: {fileID: 504887350}
   playerType: 0
-  team: 0
+  team: 1
   leftHandRodType: 2
   rightHandRodType: 3
   leftHandPosition: 0

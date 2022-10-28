@@ -165,8 +165,10 @@ public class Table : MonoBehaviour
             armHolder.name = "Arm Holder";
         }
 
+        arms = new Dictionary<Team, Dictionary<ArmHandedness, Arm>>();
         for (Team armTeam = 0; (int)armTeam < 2; armTeam++)
         {
+            arms[armTeam] = new Dictionary<ArmHandedness, Arm>();
             for (ArmHandedness armHandedness = 0; (int)armHandedness < 2; armHandedness++)
             {
                 Vector3 armPos = transform.position
@@ -211,6 +213,8 @@ public class Table : MonoBehaviour
         int offset = 4 * ((int)actionTeam);
         for (int i = 0; i < 4; i++)
         {
+            RodAction test = rodActions[(RodType)i];
+            //Debug.Log(String.Format("{0} {1} {2}", test.torque, test.force, test.gripped));
             rods[offset + i].SetState(rodActions[(RodType)i]);
         }
     }

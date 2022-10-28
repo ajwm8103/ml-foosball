@@ -91,7 +91,7 @@ public class Rod : MonoBehaviour
     // Done on post-action!!! Also has improved euler spring stuff.
     public void PostAction(){
         // Apply the action, then compute bumper if needed
-        rigidbody.AddTorque(15*Vector3.back*actionToDo.torque, ForceMode.Force);
-        Debug.Log(actionToDo.torque);
+        rigidbody.AddTorque(15*transform.up*actionToDo.torque, ForceMode.Force);
+        //Debug.Log(string.Format("{0} {1}", team, actionToDo.torque));
     }
 }

@@ -243,7 +243,6 @@ public class FoosballAgent : Agent
                 // Set left hand 
                 handRodType = handDesiredType;
                 rodActions[handRodType] = new RodAction(desiredTorque, desiredForce, true);
-                Debug.Log(desiredTorque);
             }
             else
             {
@@ -281,10 +280,10 @@ public class FoosballAgent : Agent
         
         if (m_foosballSettings.effectsAmount != 0)
         {
-            //Arm leftArm = envController.table.arms[team][ArmHandedness.LEFT];
-            //Arm rightArm = envController.table.arms[team][ArmHandedness.RIGHT];
-            //if (leftArm != null) leftArm.UpdateHand(leftHandPosition, leftHandRodType);
-            //if (rightArm != null) rightArm.UpdateHand(rightHandPosition, rightHandRodType);
+            Arm leftArm = envController.table.arms[team][ArmHandedness.LEFT];
+            Arm rightArm = envController.table.arms[team][ArmHandedness.RIGHT];
+            if (leftArm != null) leftArm.UpdateHand(leftHandPosition, leftHandRodType);
+            if (rightArm != null) rightArm.UpdateHand(rightHandPosition, rightHandRodType);
         }
 
         // Rewards
@@ -353,19 +352,27 @@ public class FoosballAgent : Agent
             }
             if (Input.GetKey(KeyCode.Alpha5))
             {
-                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.GOALIE;
+                discreteActionsOut[(int)DiscreteActionIndexSingles.LEFT_TYPE] = (int)RodType.NONE;
             }
             if (Input.GetKey(KeyCode.Alpha6))
             {
-                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.DEFENDERS;
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.GOALIE;
             }
             if (Input.GetKey(KeyCode.Alpha7))
             {
-                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.MIDFIELDERS;
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.DEFENDERS;
             }
             if (Input.GetKey(KeyCode.Alpha8))
             {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.MIDFIELDERS;
+            }
+            if (Input.GetKey(KeyCode.Alpha9))
+            {
                 discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.OFFENSIVE;
+            }
+            if (Input.GetKey(KeyCode.Alpha0))
+            {
+                discreteActionsOut[(int)DiscreteActionIndexSingles.RIGHT_TYPE] = (int)RodType.NONE;
             }
         }
         else if (playerType == PlayerType.PLAYER2)

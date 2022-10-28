@@ -15,7 +15,7 @@ public class Arm : MonoBehaviour
     GameObject handPosObject;
     Table m_table;
 
-    void Start()
+    void Awake()
     {
         m_foosballSettings = FindObjectOfType<FoosballSettings>();
     }
@@ -30,5 +30,6 @@ public class Arm : MonoBehaviour
     public void UpdateHand(float handPosition, RodType handRodType){
         Vector3 oldPos = handPosObject.transform.position;
         handPosObject.transform.position = new Vector3(m_table.transform.position.x - m_table.tso.tableLength/2f + handPosition, oldPos.y, oldPos.z);
+        handPosObject.GetComponent<Renderer>().material.color = handRodType == RodType.NONE ? m_foosballSettings.inactiveHandColor : m_foosballSettings.activeHandColor;
     }
 }
