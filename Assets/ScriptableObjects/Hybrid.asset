@@ -22,6 +22,9 @@ MonoBehaviour:
     average: 0.1
     std: 0.005
   slopes: 0
+  bumperLength:
+    average: 0.02
+    std: 0.002
   kBumper:
     average: 0.1
     std: 0.005
@@ -32,7 +35,7 @@ MonoBehaviour:
     average: 0.036
     std: 0.0005
   rodDiameter:
-    average: 0.022
+    average: 0.018
     std: 0.0005
   rodMass:
     average: 1.506
