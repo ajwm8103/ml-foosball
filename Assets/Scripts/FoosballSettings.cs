@@ -8,6 +8,8 @@ public class FoosballSettings : MonoBehaviour
     public TableType boardType = TableType.ENGSCI;
     public RulesType rulesType = RulesType.ENGSCI;
     public float handVelocity = 0.88f; // m/s
+    public float maxHandTorque = 15f; // N.m
+    public float maxHandForce = 631653263762673f;
     public float handGripMaxDistance = 0.07f; // 7 cm?
 
     [Header("Visual Settings")]

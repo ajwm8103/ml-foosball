@@ -45,14 +45,14 @@ public struct RodAction
 public class HandState
 {
     public float angle;
-    public float velocity;
+    public float angularVelocity;
     public float position;
     public RodType rodType;
     public bool hasPostActed = false;
 
-    public HandState(float angle, float velocity, float position, RodType rodType){
+    public HandState(float angle, float angularVelocity, float position, RodType rodType){
         this.angle = angle;
-        this.velocity = velocity;
+        this.angularVelocity = angularVelocity;
         this.position = position;
         this.rodType = rodType;
     }
@@ -80,8 +80,8 @@ public class FoosballAgent : Agent
 
     // Private vars
 
-    List<int> frameDiscreteActions;
-    List<float> frameContinuousActions;
+    ActionSegment<int> frameDiscreteActions;
+    ActionSegment<float> frameContinuousActions;
 
     // References to components
     FoosballEnvController envController;
@@ -119,8 +119,8 @@ public class FoosballAgent : Agent
         m_foosballSettings = FindObjectOfType<FoosballSettings>();
         leftHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
         rightHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
-        frameDiscreteActions = new List<int>();
-        frameContinuousActions = new List<float>();
+        frameDiscreteActions = new ActionSegment<int>();
+        frameContinuousActions = new ActionSegment<float>();
 
         envController = transform.parent.GetComponentInParent<FoosballEnvController>();
         m_Existential = 1f / envController.maxSteps;
@@ -294,7 +294,7 @@ public class FoosballAgent : Agent
     {
         if (!leftHandState.hasPostActed){
             // Means that the hand wasn't used at all for a rod, so we need to calculate it ourselves
-
+            leftHandState.angularVelocity += m_foosballSettings.maxHandTorque;
         }
     }
 
