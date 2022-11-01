@@ -78,6 +78,10 @@ public class Table : MonoBehaviour
 
     private void RegenerateTable()
     {
+        int redAgentInd = m_foosballEnvController.agents[0].agent.team == Team.RED ? 0 : 1;
+        FoosballAgent redAgent = m_foosballEnvController.agents[redAgentInd].agent;
+        FoosballAgent blueAgent = m_foosballEnvController.agents[1-redAgentInd].agent;
+
         // Create walls and floor
         float tableThickness = 0.10f;
         float floorYPos = tso.rodDiameter / 2f + tso.foosmanBodyHeight + tso.foosmanFootHeight + 0.007f + tableThickness / 2F;
@@ -122,6 +126,7 @@ public class Table : MonoBehaviour
             {RodType.MIDFIELDERS, tso.midfieldersLengthPercent },
             {RodType.OFFENSIVE, tso.offensiveLengthPercent },
         };
+
         // Red
         List<RodType> rodTypes = new List<RodType> { RodType.GOALIE, RodType.DEFENDERS, RodType.MIDFIELDERS, RodType.OFFENSIVE };
 
@@ -135,7 +140,7 @@ public class Table : MonoBehaviour
             rod.name = string.Format("Red {0} Rod", Enum.GetName(typeof(RodType), rodType));
             rod.transform.parent = rodHolder;
             rod.tso = tso;
-            rod.GenerateFoosmen();
+            rod.Setup(redAgent);
         }
 
         // Blue
@@ -149,7 +154,7 @@ public class Table : MonoBehaviour
             rod.name = string.Format("Blue {0} Rod", Enum.GetName(typeof(RodType), rodType));
             rod.transform.parent = rodHolder;
             rod.tso = tso;
-            rod.GenerateFoosmen();
+            rod.Setup(blueAgent);
         }
 
         // Create arms
@@ -220,9 +225,9 @@ public class Table : MonoBehaviour
     }
 
     public void PostAction(){
-        foreach (Rod rod in rods)
+        for (int i = 0; i < 8; i++)
         {
-            rod.PostAction();
+            rods[i].PostAction();
         }
     }
 }

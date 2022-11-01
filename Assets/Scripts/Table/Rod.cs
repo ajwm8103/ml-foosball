@@ -21,6 +21,7 @@ public class Rod : MonoBehaviour
     public TableScriptableObject tso;
 
     private RodAction actionToDo;
+    private FoosballAgent controllingAgent;
 
     // Start is called before the first frame update
     void Awake()
@@ -28,7 +29,8 @@ public class Rod : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void GenerateFoosmen(){
+    public void Setup(FoosballAgent agent){
+        controllingAgent = agent;
         float spacing = 0f;
         float foosmanPos = 0f;
         int foosmanNumber = 0;
@@ -91,6 +93,21 @@ public class Rod : MonoBehaviour
     // Done on post-action!!! Also has improved euler spring stuff.
     public void PostAction(){
         // Apply the action, then compute bumper if needed
+
+        HandState hand = null;
+        if (controllingAgent.leftHandState.rodType == rodType){
+            hand = controllingAgent.leftHandState;
+        } else if (controllingAgent.rightHandState.rodType == rodType){
+            hand = controllingAgent.rightHandState;
+        }
+
+        if (hand == null){
+            // On your own
+        } else {
+            // Held by a hand, trigger calculation
+
+        }
+
         rigidbody.AddTorque(15*transform.up*actionToDo.torque, ForceMode.Force);
         //Debug.Log(string.Format("{0} {1}", team, actionToDo.torque));
     }

@@ -42,6 +42,23 @@ public struct RodAction
     }
 }
 
+public class HandState
+{
+    public float angle;
+    public float velocity;
+    public float position;
+    public RodType rodType;
+    public bool hasPostActed = false;
+
+    public HandState(float angle, float velocity, float position, RodType rodType){
+        this.angle = angle;
+        this.velocity = velocity;
+        this.position = position;
+        this.rodType = rodType;
+    }
+
+}
+
 public class FoosballAgent : Agent
 {
 
@@ -55,10 +72,8 @@ public class FoosballAgent : Agent
     public PlayerType playerType = PlayerType.PLAYER1;
     public Team team = Team.RED;
 
-    public RodType leftHandRodType = RodType.NONE;
-    public RodType rightHandRodType = RodType.NONE;
-    public float leftHandPosition = 0f; // literal position
-    public float rightHandPosition = 0f; // literal position
+    public HandState leftHandState;
+    public HandState rightHandState;
 
     // States for action
     public bool hasActed = false;
@@ -99,6 +114,8 @@ public class FoosballAgent : Agent
     {
         base.Initialize();
         m_foosballSettings = FindObjectOfType<FoosballSettings>();
+        leftHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
+        rightHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
 
         envController = transform.parent.GetComponentInParent<FoosballEnvController>();
         m_Existential = 1f / envController.maxSteps;
@@ -162,6 +179,8 @@ public class FoosballAgent : Agent
 
     public void Move(ActionSegment<float> continuousActions, ActionSegment<int> discreteActions)
     {
+        leftHandState.hasPostActed = false;
+        rightHandState.hasPostActed = false;
         // If hand not on desired rod, start moving it there. Otherwise twist!
 
         // Action data
@@ -215,8 +234,8 @@ public class FoosballAgent : Agent
                 }
             }
         }*/
-        HandleHand(leftHandDesiredType, ref leftHandPosition, leftDesiredTorque, leftDesiredForce, ref rodActions, ref leftHandRodType);
-        HandleHand(rightHandDesiredType, ref rightHandPosition, rightDesiredTorque, rightDesiredForce, ref rodActions, ref rightHandRodType);
+        HandleHand(leftHandDesiredType, ref leftHandState.position, leftDesiredTorque, leftDesiredForce, ref rodActions, ref leftHandState.rodType);
+        HandleHand(rightHandDesiredType, ref rightHandState.position, rightDesiredTorque, rightDesiredForce, ref rodActions, ref rightHandState.rodType);
 
 
         // Set the rod actions
@@ -282,8 +301,8 @@ public class FoosballAgent : Agent
         {
             Arm leftArm = envController.table.arms[team][ArmHandedness.LEFT];
             Arm rightArm = envController.table.arms[team][ArmHandedness.RIGHT];
-            if (leftArm != null) leftArm.UpdateHand(leftHandPosition, leftHandRodType);
-            if (rightArm != null) rightArm.UpdateHand(rightHandPosition, rightHandRodType);
+            if (leftArm != null) leftArm.UpdateHand(leftHandState.position, leftHandState.rodType);
+            if (rightArm != null) rightArm.UpdateHand(rightHandState.position, rightHandState.rodType);
         }
 
         // Rewards

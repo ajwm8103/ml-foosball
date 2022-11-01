@@ -88,6 +88,10 @@ public class FoosballEnvController : MonoBehaviour
         }
         if (!valid) return;
 
+        // Update rod & rod + hand sims
+        table.PostAction();
+
+        // Update hand sims
         foreach (AgentInfo agentInfo in agents)
         {
             //Debug.Log(string.Format("{0} {1}", agentInfo.agent.team, agentInfo.totalReward));
@@ -95,7 +99,5 @@ public class FoosballEnvController : MonoBehaviour
 
             agentInfo.agent.hasActed = false;
         }
-
-        table.PostAction();
     }
 }
