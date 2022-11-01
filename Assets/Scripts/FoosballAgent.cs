@@ -80,6 +80,9 @@ public class FoosballAgent : Agent
 
     // Private vars
 
+    List<int> frameDiscreteActions;
+    List<float> frameContinuousActions;
+
     // References to components
     FoosballEnvController envController;
     FoosballSettings m_foosballSettings;
@@ -116,6 +119,8 @@ public class FoosballAgent : Agent
         m_foosballSettings = FindObjectOfType<FoosballSettings>();
         leftHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
         rightHandState = new HandState(0f, 0f, 0f, RodType.GOALIE);
+        frameDiscreteActions = new List<int>();
+        frameContinuousActions = new List<float>();
 
         envController = transform.parent.GetComponentInParent<FoosballEnvController>();
         m_Existential = 1f / envController.maxSteps;
@@ -181,6 +186,8 @@ public class FoosballAgent : Agent
     {
         leftHandState.hasPostActed = false;
         rightHandState.hasPostActed = false;
+        frameContinuousActions = continuousActions;
+        frameDiscreteActions = discreteActions;
         // If hand not on desired rod, start moving it there. Otherwise twist!
 
         // Action data
@@ -280,6 +287,14 @@ public class FoosballAgent : Agent
                     handPosition = rodPos;
                 }
             }
+        }
+    }
+
+    public void PostAction()
+    {
+        if (!leftHandState.hasPostActed){
+            // Means that the hand wasn't used at all for a rod, so we need to calculate it ourselves
+
         }
     }
 

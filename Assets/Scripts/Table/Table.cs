@@ -173,6 +173,7 @@ public class Table : MonoBehaviour
         arms = new Dictionary<Team, Dictionary<ArmHandedness, Arm>>();
         for (Team armTeam = 0; (int)armTeam < 2; armTeam++)
         {
+            FoosballAgent agent = armTeam == Team.RED ? redAgent : blueAgent;
             arms[armTeam] = new Dictionary<ArmHandedness, Arm>();
             for (ArmHandedness armHandedness = 0; (int)armHandedness < 2; armHandedness++)
             {
@@ -183,7 +184,7 @@ public class Table : MonoBehaviour
                 GameObject handPosObject = Instantiate(handPosPrefab, armPos, handPosPrefab.transform.rotation);
                 Arm arm = Instantiate(armPrefab, armPos, armPrefab.transform.rotation);
 
-                arm.Setup(this, m_foosballEnvController, handPosObject);
+                arm.Setup(this, m_foosballEnvController, handPosObject, armHandedness == ArmHandedness.LEFT ? agent.leftHandState : agent.rightHandState);
                 arm.name = string.Format("{0} {1} Arm", Enum.GetName(typeof(Team), armTeam), Enum.GetName(typeof(ArmHandedness), armHandedness));
                 handPosObject.transform.parent = arm.transform;
                 arm.handedness = armHandedness;

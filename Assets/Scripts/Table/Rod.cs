@@ -101,14 +101,10 @@ public class Rod : MonoBehaviour
             hand = controllingAgent.rightHandState;
         }
 
-        if (hand == null){
-            // On your own
-        } else {
+        if (hand != null){
             // Held by a hand, trigger calculation
-
+            rigidbody.AddTorque(15 * transform.up * actionToDo.torque, ForceMode.Force);
         }
-
-        rigidbody.AddTorque(15*transform.up*actionToDo.torque, ForceMode.Force);
         //Debug.Log(string.Format("{0} {1}", team, actionToDo.torque));
     }
 }
