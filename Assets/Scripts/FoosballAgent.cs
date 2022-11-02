@@ -292,9 +292,27 @@ public class FoosballAgent : Agent
 
     public void PostAction()
     {
-        if (!leftHandState.hasPostActed){
+        UpdateHandAlone(leftHandState, ContinuousActionIndexSingles.LEFT_TORQUE);
+        UpdateHandAlone(rightHandState, ContinuousActionIndexSingles.RIGHT_TORQUE);
+    }
+
+    public void UpdateHandAlone(HandState handState, ContinuousActionIndexSingles idx)
+    {
+        if (!handState.hasPostActed)
+        {
             // Means that the hand wasn't used at all for a rod, so we need to calculate it ourselves
-            leftHandState.angularVelocity += m_foosballSettings.maxHandTorque;
+            handState.angularVelocity += frameContinuousActions[(int)idx] * m_foosballSettings.maxHandTorque * Time.deltaTime / m_foosballSettings.handMass;
+            handState.angle += handState.angularVelocity * Time.deltaTime;
+            if (handState.angle >= m_foosballSettings.maxHandAngle)
+            {
+                handState.angle = m_foosballSettings.maxHandAngle;
+                handState.angularVelocity = 0f;
+            }
+            else if (handState.angle <= -m_foosballSettings.maxHandAngle)
+            {
+                handState.angle = -m_foosballSettings.maxHandAngle;
+                handState.angularVelocity = 0f;
+            }
         }
     }
 

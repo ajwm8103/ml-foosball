@@ -14,7 +14,7 @@ public class Rod : MonoBehaviour
     [Header("Data")]
     public RodType rodType;
     public Team team;
-    public Rigidbody rigidbody;
+    public Rigidbody m_rigidbody;
     [SerializeField]
     private float position;
     [HideInInspector]
@@ -22,11 +22,14 @@ public class Rod : MonoBehaviour
 
     private RodAction actionToDo;
     private FoosballAgent controllingAgent;
+    private FoosballSettings m_foosballSettings;
+    private float prevAngle = 0f;
 
     // Start is called before the first frame update
     void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        m_rigidbody = GetComponent<Rigidbody>();
+        m_foosballSettings = FindObjectOfType<FoosballSettings>();
     }
 
     public void Setup(FoosballAgent agent){
@@ -103,8 +106,36 @@ public class Rod : MonoBehaviour
 
         if (hand != null){
             // Held by a hand, trigger calculation
-            rigidbody.AddTorque(15 * transform.up * actionToDo.torque, ForceMode.Force);
+            hand.hasPostActed = true;
+
+            // Update hand
+            
+            float angle = Mathf.Deg2Rad * transform.rotation.eulerAngles.x;
+            hand.angle += angle - prevAngle;
+            if (hand.angle > m_foosballSettings.maxHandAngle)
+            {
+                float back = m_foosballSettings.maxHandAngle - hand.angle;
+                hand.angle = m_foosballSettings.maxHandAngle;
+                transform.rotation = Quaternion.Euler(20f, 90f, 90f);
+                //transform.rotation = Quaternion.Euler(20f, 0f, Mathf.Rad2Deg * back + transform.rotation.eulerAngles.z);
+                m_rigidbody.angularVelocity = Vector3.zero;
+            } else if (hand.angle < -m_foosballSettings.maxHandAngle)
+            {
+                float back = -m_foosballSettings.maxHandAngle - hand.angle;
+                hand.angle = -m_foosballSettings.maxHandAngle;
+                transform.rotation = Quaternion.Euler(20f, 90f, 90f);
+                //transform.rotation = Quaternion.Euler(20f, 0f, Mathf.Rad2Deg * back + transform.rotation.eulerAngles.z);
+                m_rigidbody.angularVelocity = Vector3.zero;
+            } else {
+                m_rigidbody.AddTorque(15 * transform.up * actionToDo.torque, ForceMode.Force);
+            }
+
+
+
         }
         //Debug.Log(string.Format("{0} {1}", team, actionToDo.torque));
+
+        // Update prevAngle
+        prevAngle = Mathf.Deg2Rad * transform.rotation.eulerAngles.x;
     }
 }

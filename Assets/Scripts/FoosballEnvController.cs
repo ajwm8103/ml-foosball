@@ -95,7 +95,7 @@ public class FoosballEnvController : MonoBehaviour
         foreach (AgentInfo agentInfo in agents)
         {
             //Debug.Log(string.Format("{0} {1}", agentInfo.agent.team, agentInfo.totalReward));
-            //agentInfo.agent.PostAction();
+            agentInfo.agent.PostAction();
 
             agentInfo.agent.hasActed = false;
         }
